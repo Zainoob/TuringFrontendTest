@@ -20,7 +20,7 @@ export const StyledButton = styled(Button)`
 
 export const Container = styled(Layout)`
   overflow-x: hidden;
-  overflow-y: hidden;
+  height: fit-content;
 `;
 export const NavBar = styled(Header)`
   background-color: #ffffff;
@@ -40,82 +40,19 @@ export const Image = styled.img`
 
 export const ContentContainer = styled(Content)`
   background-color: #ffffff;
+  height: fit-content;
   overflow-x: hidden;
-  overflow-y: hidden;
 `;
 
 export const HeadingWrapper = styled.div`
   margin-top: 20px;
-  margin-left: 80px;
+  margin-left: 90px;
 `;
 
 export const Heading = styled(Typography.Title)`
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 `;
 
-export const TableContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: left;
-  justify-content: center;
-  background-color: #ffffff;
-  height: 90vh;
-`;
-
-export const FilterContainer = styled.div`
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  margin-left: 160px;
-`;
-
-export const Filter = styled(Typography.Text)`
-  margin-right: 0.5rem;
-`;
-
-export const FormContainer = styled(Form)`
-  border-bottom: none;
-`;
-
-export const FormItem = styled(Form.Item)`
-  margin-bottom: 0;
-`;
-
-export const Dropdown = styled(Select)`
-  width: 70px;
-  border-bottom: none;
-`;
-
-export const StyledTable = styled(Table)`
-  max-width: 1200px;
-  width: 100%;
-  margin-bottom: 1rem;
-`;
-
-export const StyledPagination = styled(Pagination)`
-  margin-bottom: 1rem;
-`;
-
-export const TableComponent = ({
-  dataSource,
-  columns,
-}: {
-  dataSource: Call[];
-  columns: any[];
-}) => {
-  return (
-    <Table
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      bordered
-      style={{ maxWidth: "1200px", width: "100%", marginBottom: "1rem" }}
-    />
-  );
-};
 
 export const CenteredWrapper = styled.div`
   align-items: center;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Layout, Input, Button, Card, Space } from "antd";
+import { Layout, Input, Button, Card, Space, Form } from "antd";
 const { Header, Footer } = Layout;
 
 export const Image = styled.img`
@@ -16,10 +16,11 @@ export const ContentContainer = styled.div`
   background-color: #fdf5f3;
 `;
 
-export const LoginCard = styled(Card)`
-  display: flex;
+export const LoginForm =styled(Form)`
   width: 500px;
-  padding: 4px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-right: 20px;
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
@@ -27,11 +28,16 @@ export const LoginCard = styled(Card)`
 `;
 
 export const InputField = styled(Input)`
-  padding: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
+  width: 100%
 `;
 
+export const FormContainer= styled(Form)`
+  width: 100%
+`;
+export const LoginContainer = styled.div`
+`;
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-start;

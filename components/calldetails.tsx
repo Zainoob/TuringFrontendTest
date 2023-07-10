@@ -1,6 +1,6 @@
 import { Button, Modal, Form, Input, Typography } from "antd";
 import { useState } from "react";
-import axios from "axios";
+import { DetailsContainer,Text } from "@/styles/callDetails.styled";
 import handleNote from "@/api/notesHandler";
 import { Call } from "../types/Models";
 
@@ -42,7 +42,7 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
   };
 
   return (
-    <div>
+    <DetailsContainer>
       <Button onClick={handleClickOpen} size="small" type="primary" style={{ backgroundColor: "#4C41F5" }}>
         Add Note
       </Button>
@@ -58,21 +58,21 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
           </Button>,
         ]}
       >
-        <p>
+        <Text>
           <Typography.Text strong>Call ID: </Typography.Text>
           <Typography.Text>{call.id}</Typography.Text>
-        </p>
-        <p>
+        </Text>
+        <Text>
           <Typography.Text strong>Caller: </Typography.Text>
           <Typography.Text>{call.from}</Typography.Text>
-        </p>
+        </Text>
         <Form>
           <Form.Item label="Add Note">
           <Input value={note} onChange={handleNoteChange} />
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </DetailsContainer>
   );
 };
 

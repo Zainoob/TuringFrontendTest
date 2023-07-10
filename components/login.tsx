@@ -1,71 +1,78 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from "react";
 import { FormEvent } from "react";
 import axios, { AxiosResponse } from "axios";
 import { authtoken } from "@/types/Models";
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import image from "../design-files/TTLogo.png";
 import { useRouter } from "next/router";
-import handlelogin from '@/api/loginHandler';
-import { ContentContainer, LoginButton, LoginCard, Navbar, Image, InputField, ButtonContainer } from '@/styles/loginpage.styled';
+import handlelogin from "@/api/loginHandler";
+import { Form, Input, Button } from "antd";
+import {
+  ContentContainer,
+  LoginButton,
+  LoginForm,
+  Navbar,
+  Image,
+  InputField,
+  ButtonContainer,
+  LoginContainer,
+} from "@/styles/loginPage.styled";
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const imageSrc = image.src;
   const router = useRouter();
 
-  const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
   //sending login request to endpoint auth/login
-  const handleLoginClick = async (event: FormEvent) => {
-    event.preventDefault();
-    console.log("we enter the login function ");
+  const handleLoginClick = async (values: unknown) => {
+    const { username, password } = values as { username: any; password: any };
+    console.log(username, password);
+    console.log("we enter the login function");
     try {
-        const login: boolean | undefined = await handlelogin(username, password);
+      const login: boolean | undefined = await handlelogin(username, password);
       // Display alert message
-       //redirecting to calls page
-       router.push("/calls");
+      // Redirecting to calls page
+      router.push("/calls");
     } catch (error) {
-      console.log("Login failed:", error);
+      console.error(error);
+      // Handle any errors that occur during the asynchronous operations
     }
   };
 
   return (
-    <div>
+    <LoginContainer>
       <Navbar>
-          <Image src={imageSrc} alt="Company Logo"/>
+        <Image src={imageSrc} alt="Company Logo" />
       </Navbar>
       <ContentContainer>
-        <form onSubmit={handleLoginClick}>
-          <LoginCard>
-          <InputField
+        <LoginForm layout="vertical" onFinish={handleLoginClick}>
+            <Form.Item
+              label="Username"
               name="username"
-              placeholder="Username"
-              onChange={handleUsername}
-              prefix={<UserOutlined />}
-              required
-            />
-            <InputField
+              rules={[
+                { required: true, message: "Please enter your username!" },
+              ]}
+            >
+              <InputField prefix={<UserOutlined />} placeholder="Username" />
+            </Form.Item>
+            <Form.Item
+              label="Password"
               name="password"
-              placeholder="Password"
-              type="password"
-              prefix={<LockOutlined />}
-              onChange={handlePassword}
-              required
-            />
-            <ButtonContainer>
+              rules={[
+                { required: true, message: "Please enter your password!" },
+              ]}
+            >
+              <InputField
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                type="password"
+              />
+            </Form.Item>
+            <Form.Item>
               <LoginButton type="primary" htmlType="submit">
                 Login
               </LoginButton>
-            </ButtonContainer>
-          </LoginCard>
-        </form>
+            </Form.Item>
+        </LoginForm>
       </ContentContainer>
-    </div>
+    </LoginContainer>
   );
 }
