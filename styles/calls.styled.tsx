@@ -53,7 +53,6 @@ export const Heading = styled(Typography.Title)`
   margin-bottom: 3rem;
 `;
 
-
 export const CenteredWrapper = styled.div`
   align-items: center;
 `;

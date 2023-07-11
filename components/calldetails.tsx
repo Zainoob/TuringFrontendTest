@@ -1,4 +1,4 @@
-import { Button, Modal, Form, Input, Typography } from "antd";
+import { Button, Modal, Form, Input, Typography, notification } from "antd";
 import { useState } from "react";
 import { DetailsContainer,Text } from "@/styles/callDetails.styled";
 import handleNote from "@/api/notesHandler";
@@ -32,6 +32,10 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
       const check:boolean|undefined=await handleNote(callId,note);
       if(check)
       {
+        notification.success({
+          message: "Note Added!",
+          duration: 1, // Duration in seconds for pop up
+        });
         console.log("Note added successfully");
       }
     }

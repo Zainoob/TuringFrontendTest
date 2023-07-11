@@ -1,5 +1,5 @@
 import {
-  Typography,
+  Typography,notification
 } from "antd";
 import {
   NavBar,
@@ -19,6 +19,10 @@ const Calls: React.FC = () => {
   const router =useRouter();
   const handleLogout = () => {
     localStorage.removeItem("access_token");
+    notification.success({
+      message: "Logged out",
+      duration: 2, // Duration in seconds for pop up
+    });
     router.push("/");
   };
 

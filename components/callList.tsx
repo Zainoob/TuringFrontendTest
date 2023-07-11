@@ -1,5 +1,5 @@
-import { SetStateAction, useEffect, useState } from "react";
-import { Select } from "antd";
+import React, { useState, useEffect, SetStateAction } from "react";
+import { Select, notification, Button } from "antd";
 import {
   StyledPagination,
   TableContainer,
@@ -9,12 +9,21 @@ import {
   FormItem,
   CenteredWrapper,
   Filter,
+  ArchiveButton,
+  UnarchiveButton,
 } from "@/styles/callsList.styled";
+import { handlearchive } from "@/api/archiveHandler";
 import { Call } from "@/types/Models";
-import column from "@/components/callComponents";
+import { Heading, HeadingWrapper } from "@/styles/calls.styled";
+import {
+  renderActions,
+  renderDirection,
+  renderCallType,
+} from "@/components/callComponents";
 import handleCalls from "@/api/callsHandler";
+import { AnyComponent } from "styled-components/dist/types";
+
 const { Option } = Select;
-const columnsdata = column;
 
 const CallsList: React.FC = () => {
   const [filter, setFilter] = useState("All");
@@ -47,15 +56,21 @@ const CallsList: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div>Loading...Please wait</div>;
-  }
+  const handleUpdateCall = (record: Call) => {
+    setfilteredCalls((prevCalls) => {
+      return prevCalls.map((call) => {
+        if (call.id === record.id) {
+          call.is_archived = record.is_archived;
+        }
+        return call;
+      });
+    });
+  };
 
   const handleFilterChange = (selectedValue: SetStateAction<string>) => {
     setFilter(selectedValue);
 
     try {
-      // Filter the calls based on the selected filter value
       let filterCalls;
 
       if (selectedValue === "All") {
@@ -74,19 +89,104 @@ const CallsList: React.FC = () => {
       setfilteredCalls(filterCalls);
       console.log("Calls filtered", filterCalls.length);
     } catch (error) {
-      console.log("error in filtering calls", error);
+      console.log("Error in filtering calls", error);
     }
   };
 
-  if (filteredcalls.length === 0) {
-    return <div>No calls available.</div>;
-  }
+  const renderPagination = () => {
+    return (
+      <StyledPagination
+        total={filteredcalls.length}
+        pageSize={rowsPerPage}
+        defaultCurrent={1}
+        current={page}
+        onChange={setPage}
+        showSizeChanger={false}
+        showQuickJumper={false}
+      />
+    );
+  };
 
   const getPaginatedData = () => {
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     return filteredcalls.slice(startIndex, endIndex);
   };
+
+  if (loading) {
+    return (
+      <HeadingWrapper>
+        <Heading level={5}>Loading...Please wait</Heading>
+      </HeadingWrapper>
+    );
+  }
+
+  if (filteredcalls.length === 0) {
+    return <div>No calls available.</div>;
+  }
+
+  const columnsdata: any = [
+    {
+      dataIndex: "call_type",
+      title: "Call Type",
+      render: (_: any, record: Call) => renderCallType(_, record),
+    },
+    {
+      dataIndex: "direction",
+      title: "Direction",
+      render: (_: any, record: Call) => renderDirection(_, record),
+    },
+    { dataIndex: "duration", title: "Duration" },
+    { dataIndex: "from", title: "From" },
+    { dataIndex: "to", title: "To" },
+    { dataIndex: "via", title: "Via" },
+    { dataIndex: "created_at", title: "Created At" },
+    {
+      dataIndex: "is_archived",
+      title: "Is Archived",
+      render: (_: any, record: Call) => {
+        const handleArchiveCallback = async () => {
+          try {
+            const updatedIsArchived: Call = await handlearchive(record);
+            if (updatedIsArchived.is_archived) {
+              handleUpdateCall(updatedIsArchived);
+              notification.success({
+                message: "Call Archived!",
+                duration: 1, // Duration in seconds for pop up
+              });
+            } else {
+              handleUpdateCall(updatedIsArchived);
+              notification.success({
+                message: "Call Unarchived!",
+                duration: 1, // Duration in seconds for pop up
+              });
+            }
+          } catch (error) {
+            console.log("Error occurred while archiving:", error);
+          }
+        };
+
+        return (
+          <>
+            {record.is_archived ? (
+              <ArchiveButton onClick={handleArchiveCallback} type="link">
+                Archived
+              </ArchiveButton>
+            ) : (
+              <UnarchiveButton onClick={handleArchiveCallback} type="link">
+                Unarchived
+              </UnarchiveButton>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      dataIndex: "actions",
+      title: "Actions",
+      render: (_: any, record: Call) => renderActions(_, record),
+    },
+  ];
 
   return (
     <TableContainer>
@@ -107,17 +207,11 @@ const CallsList: React.FC = () => {
         </FormContainer>
       </FilterContainer>
       <CenteredWrapper>
-      <StyledTable dataSource={getPaginatedData()} columns={columnsdata} pagination={false}/>
-      </CenteredWrapper>
-      <CenteredWrapper>
-        <StyledPagination
-          total={filteredcalls.length}
-          pageSize={rowsPerPage}
-          defaultCurrent={1}
-          current={page}
-          onChange={setPage}
-          showSizeChanger={false}
-          showQuickJumper={false}
+        <StyledTable
+          dataSource={getPaginatedData()}
+          columns={columnsdata}
+          pagination={false}
+          footer={() => (renderPagination())}
         />
       </CenteredWrapper>
     </TableContainer>
