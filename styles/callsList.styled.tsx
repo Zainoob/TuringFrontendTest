@@ -8,7 +8,7 @@ import {
   Pagination,
 } from "antd";
 import styled from "styled-components";
-import { Call } from "@/types/Models";
+import { Call } from "@/models/types";
 
 export const TableContainer = styled.div`
   display: flex;
@@ -53,13 +53,19 @@ export const StyledTable = styled(Table)`
   align-items: center;
   justify-content: center;
   display: flex;
+
+  .ant-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
 `;
 
-export const StyledPagination = styled(Pagination)`
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: center;
+export const StyledSelect = styled(Select)`
+  width: 70px;
+  border-bottom: none;
 `;
+
 export const ArchiveButton = styled(Button)`
   border-radius: 4px;
   background-color: #e0fff6;

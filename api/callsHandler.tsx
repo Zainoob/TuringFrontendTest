@@ -1,12 +1,11 @@
 import axios, { AxiosResponse } from "axios";
-import { CallResponse, Call } from "@/types/Models";
+import { CallResponse, Call } from "@/models/types";
 const handleCalls = async () => {
   try {
     const token: string | null = localStorage.getItem("access_token");
     if (!token) {
       throw new Error("Access token not found");
     }
-    console.log("Access token working", token);
 
     const calls: Call[] = [];
     let offset = 0;
@@ -33,8 +32,6 @@ const handleCalls = async () => {
 
       offset += limit;
     }
-
-    console.log(JSON.stringify(calls));
     return calls;
   } catch (error) {
     console.log("Error in fetching calls", error);

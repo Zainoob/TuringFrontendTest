@@ -1,12 +1,10 @@
 import { Button, Modal, Form, Input, Typography, notification } from "antd";
 import { useState } from "react";
-import { DetailsContainer,Text } from "@/styles/callDetails.styled";
+import { DetailsContainer,Text, StyledButton } from "@/styles/callDetails.styled";
 import handleNote from "@/api/notesHandler";
-import { Call } from "../types/Models";
+import { Call } from "../models/types";
+import { CallDetailsPopupProps } from "../models/types";
 
-interface CallDetailsPopupProps {
-  call: Call;
-}
 
 const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
   const [visible, setVisible] = useState(false);
@@ -25,7 +23,6 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
   };
 
   const handleSaveNote = async (): Promise<void> => {
-    console.log("Note:", note);
     const callId = call.id; // Accessing the call ID from the props
     handleClose();
     try{
@@ -36,7 +33,6 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
           message: "Note Added!",
           duration: 1, // Duration in seconds for pop up
         });
-        console.log("Note added successfully");
       }
     }
     catch(error){
@@ -47,9 +43,9 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
 
   return (
     <DetailsContainer>
-      <Button onClick={handleClickOpen} size="small" type="primary" style={{ backgroundColor: "#4C41F5" }}>
+      <StyledButton  onClick={handleClickOpen} size="small" type="primary" >
         Add Note
-      </Button>
+      </StyledButton >
       <Modal title={
       <Typography.Title level={4}>Call Details</Typography.Title>}
        visible={visible} onCancel={handleClose}
@@ -57,9 +53,9 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
           <Button key="cancel" onClick={handleClose}>
             Cancel
           </Button>,
-          <Button key="save" type="primary" onClick={handleSaveNote} style={{ backgroundColor: "#4C41F5" }}>
+          <StyledButton  key="save" type="primary" onClick={handleSaveNote} >
             Save Note
-          </Button>,
+          </StyledButton >,
         ]}
       >
         <Text>

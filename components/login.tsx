@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { FormEvent } from "react";
 import axios, { AxiosResponse } from "axios";
-import { authtoken } from "@/types/Models";
+import { authtoken } from "@/models/types";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import image from "../design-files/TTLogo.png";
 import { useRouter } from "next/router";
@@ -24,8 +24,7 @@ export default function Login() {
   //sending login request to endpoint auth/login
   const handleLoginClick = async (values: unknown) => {
     const { username, password } = values as { username: any; password: any };
-    console.log(username, password);
-    console.log("we enter the login function");
+
     try {
       const login: boolean | undefined = await handlelogin(username, password);
       // Display alert message

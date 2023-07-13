@@ -1,13 +1,11 @@
 import axios, { AxiosResponse } from "axios";
-import { CallResponse, Call, Note } from "@/types/Models";
+import { CallResponse, Call, Note } from "@/models/types";
 export const handlearchive = async (call: Call) => {
   const callid: string = call.id;
   const token: string | null = localStorage.getItem("access_token");
   if (!token) {
     throw new Error("Access token not found");
   }
-  console.log(callid);
-  console.log(token);
 
   try {
     const response: AxiosResponse<any> = await axios.put(
@@ -19,7 +17,6 @@ export const handlearchive = async (call: Call) => {
         },
       }
     );
-    console.log("Archive function successful!\n", JSON.stringify(response.data));
     // Return the updated is_archived value from the response
     if (response.data) {
       call.is_archived=response.data.is_archived;

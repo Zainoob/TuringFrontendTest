@@ -1,4 +1,4 @@
-import { Call } from "@/types/Models";
+import { Call } from "@/models/types";
 import { Button } from "antd";
 import { handlearchive } from "@/api/archiveHandler";
 import CallDetailsPopup from "@/components/callDetails";

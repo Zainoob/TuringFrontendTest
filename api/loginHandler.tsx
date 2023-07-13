@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { authtoken } from "@/types/Models";
+import { authtoken } from "@/models/types";
 const handlelogin = async (username: string, password: string) => {
   try {
     const response: AxiosResponse<authtoken> = await axios.post(
@@ -10,7 +10,6 @@ const handlelogin = async (username: string, password: string) => {
       }
     );
     const authToken: authtoken = response.data;
-    console.log("Access Token: " + authToken.access_token);
 
     if (authToken.access_token) {
       //setting authtoken in local storage
@@ -18,11 +17,7 @@ const handlelogin = async (username: string, password: string) => {
       //Starting token refresh timer (10 minutes) before it expires
       setTimeout(refreshToken, 1000 * 60 * 10);
       return true;
-    } else {
-      alert("Login Failed :(");
-      return false;
-    }
-
+    } 
     // Display alert message
   } catch (error) {
     console.log("Login failed:", error);
@@ -30,7 +25,6 @@ const handlelogin = async (username: string, password: string) => {
 };
 //sending refresh token request to endpoint auth/refresh-token
 const refreshToken = async (): Promise<void> => {
-  console.log("we enter the refresh token function ");
   const Token: string | null = localStorage.getItem("access_token");
   if (!Token) {
     console.log("No token in storage");
@@ -51,7 +45,6 @@ const refreshToken = async (): Promise<void> => {
     );
 
     const authToken: authtoken = response.data;
-    console.log("Refreshed Access Token: " + authToken.access_token);
     localStorage.setItem("access_token", authToken.access_token);
 
     // Starting token refresh timer (10 minutes) before it expires

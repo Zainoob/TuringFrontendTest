@@ -22,6 +22,10 @@ export type CallResponse = {
   hasNextPage: boolean;
 };
 
+export interface CallDetailsPopupProps {
+  call: Call;
+}
+
 export type User ={
   id: string;
   username: string;

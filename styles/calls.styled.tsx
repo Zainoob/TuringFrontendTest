@@ -8,7 +8,7 @@ import {
   Pagination,
 } from "antd";
 import styled from "styled-components";
-import { CallResponse, Call, Note } from "@/types/Models";
+import { CallResponse, Call, Note } from "@/models/types";
 
 const { Header, Content } = Layout;
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, SetStateAction } from "react";
 import { Select, notification, Button } from "antd";
 import {
-  StyledPagination,
   TableContainer,
   FilterContainer,
   StyledTable,
   FormContainer,
+  StyledSelect,
   FormItem,
   CenteredWrapper,
   Filter,
@@ -13,7 +13,7 @@ import {
   UnarchiveButton,
 } from "@/styles/callsList.styled";
 import { handlearchive } from "@/api/archiveHandler";
-import { Call } from "@/types/Models";
+import { Call } from "@/models/types";
 import { Heading, HeadingWrapper } from "@/styles/calls.styled";
 import {
   renderActions,
@@ -28,24 +28,37 @@ const { Option } = Select;
 const CallsList: React.FC = () => {
   const [filter, setFilter] = useState("All");
   const [page, setPage] = useState<number>(1);
-  const rowsPerPage = 6;
-
   const [calls, setCalls] = useState<Call[]>([]);
   const [filteredcalls, setfilteredCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const rowsPerPage = 6;
+  
+  const options = [
+    { value: "All", label: "All" },
+    { value: "Archived", label: "Archived" },
+    { value: "Unarchived", label: "Unarchived" },
+  ];
+
+  const paginationConfig = {
+    total: filteredcalls.length,
+    pageSize: rowsPerPage,
+    defaultCurrent: 1,
+    current: page,
+    onChange: setPage,
+    showSizeChanger: false,
+    showQuickJumper: false,
+  };
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
         const callsData: Call[] | undefined = await handleCalls();
-        console.log(callsData);
         if (callsData) {
           setLoading(false);
           setCalls(callsData);
           setfilteredCalls(callsData);
-        } else {
-          console.log("Error in fetching calls");
         }
       } catch (error) {
         console.log("Error in fetching calls", error);
@@ -67,9 +80,10 @@ const CallsList: React.FC = () => {
     });
   };
 
-  const handleFilterChange = (selectedValue: SetStateAction<string>) => {
-    setFilter(selectedValue);
-
+  const handleFilterChange = (selectedValue: unknown) => {
+    if (typeof selectedValue === "string") {
+      setFilter(selectedValue);
+    }
     try {
       let filterCalls;
 
@@ -87,24 +101,9 @@ const CallsList: React.FC = () => {
       }
 
       setfilteredCalls(filterCalls);
-      console.log("Calls filtered", filterCalls.length);
     } catch (error) {
       console.log("Error in filtering calls", error);
     }
-  };
-
-  const renderPagination = () => {
-    return (
-      <StyledPagination
-        total={filteredcalls.length}
-        pageSize={rowsPerPage}
-        defaultCurrent={1}
-        current={page}
-        onChange={setPage}
-        showSizeChanger={false}
-        showQuickJumper={false}
-      />
-    );
   };
 
   const getPaginatedData = () => {
@@ -194,15 +193,16 @@ const CallsList: React.FC = () => {
         <Filter type="secondary">Filter by:</Filter>
         <FormContainer>
           <FormItem>
-            <Select
+            <StyledSelect
               value={filter}
-              onChange={(value) => handleFilterChange(value)}
-              style={{ width: "70px", borderBottom: "none" }}
+              onChange={(value: unknown) => handleFilterChange(value)}
             >
-              <Option value="All">All</Option>
-              <Option value="Archived">Archived</Option>
-              <Option value="Unarchived">Unarchived</Option>
-            </Select>
+              {options.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </StyledSelect>
           </FormItem>
         </FormContainer>
       </FilterContainer>
@@ -210,8 +210,7 @@ const CallsList: React.FC = () => {
         <StyledTable
           dataSource={getPaginatedData()}
           columns={columnsdata}
-          pagination={false}
-          footer={() => (renderPagination())}
+          pagination={paginationConfig}
         />
       </CenteredWrapper>
     </TableContainer>
