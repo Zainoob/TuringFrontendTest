@@ -1,45 +1,47 @@
 import { Button, Modal, Form, Input, Typography, notification } from "antd";
 import { useState } from "react";
-import { DetailsContainer,Text, StyledButton } from "@/styles/callDetails.styled";
+import { DetailsContainer, Text, StyledButton } from "@/styles/callDetails.styled";
 import handleNote from "@/api/notesHandler";
-import { Call } from "../models/types";
 import { CallDetailsPopupProps } from "../models/types";
 
-
 const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
+  // State variables
   const [visible, setVisible] = useState(false);
   const [note, setNote] = useState("");
 
+  // Open the modal
   const handleClickOpen = () => {
     setVisible(true);
   };
 
+  // Close the modal
   const handleClose = () => {
     setVisible(false);
   };
 
+  // Update the note value when input changes
   const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNote(event.target.value);
   };
 
+  // Save the note
   const handleSaveNote = async (): Promise<void> => {
     const callId = call.id; // Accessing the call ID from the props
     handleClose();
-    try{
-      const check:boolean|undefined=await handleNote(callId,note);
-      if(check)
-      {
+    try {
+      // Call the API to save the note
+      const check: boolean | undefined = await handleNote(callId, note);
+      if (check) {
         notification.success({
           message: "Note Added!",
           duration: 1, // Duration in seconds for pop up
         });
       }
-    }
-    catch(error){
+    } catch (error) {
       console.log("Saving notes failed.", error);
     }
-    
   };
+
 
   return (
     <DetailsContainer>

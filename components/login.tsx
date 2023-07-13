@@ -27,8 +27,7 @@ export default function Login() {
 
     try {
       const login: boolean | undefined = await handlelogin(username, password);
-      // Display alert message
-      // Redirectto calls page
+      // Display notfi message and redirect to calls page
       if (login) {
         notification.success({
           message: "Login Successful!",
@@ -42,6 +41,7 @@ export default function Login() {
     }
   };
   useEffect(() => {
+    //on page load localstorage should be clear
     localStorage.clear();
   }, []);
 

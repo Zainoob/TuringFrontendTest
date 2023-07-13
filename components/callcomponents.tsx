@@ -1,8 +1,7 @@
 import { Call } from "@/models/types";
-import { Button } from "antd";
-import { handlearchive } from "@/api/archiveHandler";
 import CallDetailsPopup from "@/components/callDetails";
 
+// Function to render the call type column
 export function renderCallType(_: any, record: Call) {
   let callType: string = "";
   let color = "";
@@ -21,6 +20,7 @@ export function renderCallType(_: any, record: Call) {
   return <span style={{ color }}>{callType}</span>;
 }
 
+// Function to render the direction column
 export function renderDirection(_: any, record: Call) {
   return (
     <span style={{ color: "#225FBD" }}>
@@ -29,8 +29,7 @@ export function renderDirection(_: any, record: Call) {
   );
 }
 
+// Function to render the actions column
 export function renderActions(_: any, record: Call) {
   return <CallDetailsPopup call={record} />;
 }
-
-

@@ -1,38 +1,38 @@
 export type Note = {
-  id:string;
-  content: string;
+  id: string; // Unique ID of the note
+  content: string; // Content of the note
 };
 
 export type Call = {
-  id: string; // "unique ID of call"
-  direction: string; // "inbound" or "outbound" call
+  id: string; // Unique ID of the call
+  direction: string; // Direction of the call (inbound or outbound)
   from: string; // Caller's number
   to: string; // Callee's number
-  duration: number; // Duration of a call (in seconds)
-  is_archived: boolean; // Boolean that indicates if the call is archived or not
-  call_type: string; // The type of the call, it can be a missed, answered or voicemail.
-  via: string; // Aircall number used for the call.
-  created_at: string; // When the call has been made.
-  notes: Note[]; // Notes related to a given call
+  duration: number; // Duration of the call in seconds
+  is_archived: boolean; // Boolean indicating if the call is archived or not
+  call_type: string; // Type of the call (missed, answered, or voicemail)
+  via: string; // Aircall number used for the call
+  created_at: string; // Timestamp when the call was made
+  notes: Note[]; // Array of notes related to the call
 };
 
 export type CallResponse = {
-  nodes: Call[];
-  totalCount: number;
-  hasNextPage: boolean;
+  nodes: Call[]; // Array of calls
+  totalCount: number; // Total count of calls
+  hasNextPage: boolean; // Boolean indicating if there is a next page of calls
 };
 
 export interface CallDetailsPopupProps {
-  call: Call;
+  call: Call; // Call object to display details for
 }
 
-export type User ={
-  id: string;
-  username: string;
+export type User = {
+  id: string; // Unique ID of the user
+  username: string; // Username of the user
 }
 
 export type authtoken = {
-  access_token : string ;
-  refresh_token:string;
-  user :User ;
+  access_token: string; // Access token for authentication
+  refresh_token: string; // Refresh token for authentication
+  user: User; // User object
 }

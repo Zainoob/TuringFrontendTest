@@ -17,6 +17,8 @@ import CallsList from "@/components/callList";
 const Calls: React.FC = () => {
   const imageSrc = image.src;
   const router =useRouter();
+
+  //when user clicks log out
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     notification.success({
