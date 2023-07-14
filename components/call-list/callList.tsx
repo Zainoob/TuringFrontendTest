@@ -11,7 +11,7 @@ import {
   Filter,
   ArchiveButton,
   UnarchiveButton,
-} from "@/styles/callsList.styled";
+} from "./elements";
 import { handlearchive } from "@/api/archiveHandler";
 import handleCalls from "@/api/callsHandler";
 import { Call } from "@/models/types";
@@ -20,29 +20,33 @@ import {
   renderActions,
   renderDirection,
   renderCallType,
-} from "@/components/callComponents";
+} from "@/components/call-components/callComponents";
+import { ColumnsType, TablePaginationConfig } from "antd/es/table/interface";
 
 const { Option } = Select;
 
 const CallsList: React.FC = () => {
   //state variables
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<string>("All");
   const [page, setPage] = useState<number>(1);
   const [calls, setCalls] = useState<Call[]>([]);
   const [filteredcalls, setfilteredCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const rowsPerPage = 6;
+  const rowsPerPage:number = 6;
 
   // Options for filter select
-  const options = [
+  const options: {
+    value: string;
+    label: string;
+}[] = [
     { value: "All", label: "All" },
     { value: "Archived", label: "Archived" },
     { value: "Unarchived", label: "Unarchived" },
   ];
 
   // Configuration for pagination
-  const paginationConfig = {
+  const paginationConfig:TablePaginationConfig = {
     total: filteredcalls.length,
     pageSize: rowsPerPage,
     defaultCurrent: 1,
@@ -54,7 +58,7 @@ const CallsList: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         // Fetch calls data from API
         const callsData: Call[] | undefined = await handleCalls();
@@ -72,7 +76,7 @@ const CallsList: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleUpdateCall = (record: Call) => {
+  const handleUpdateCall = (record: Call):void => {
     // Update the archived status of the call in filteredCalls state
     setfilteredCalls((prevCalls) => {
       return prevCalls.map((call) => {
@@ -84,7 +88,7 @@ const CallsList: React.FC = () => {
     });
   };
 
-  const handleFilterChange = (selectedValue: unknown) => {
+  const handleFilterChange = (selectedValue: unknown):void => {
     if (typeof selectedValue === "string") {
       setFilter(selectedValue);
     }
@@ -110,7 +114,7 @@ const CallsList: React.FC = () => {
     }
   };
 
-  const getPaginatedData = () => {
+  const getPaginatedData = ():Call[] => {
     // Get the paginated data based on the current page and rows per page
     const startIndex = (page - 1) * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
@@ -131,17 +135,22 @@ const CallsList: React.FC = () => {
     return <div>No calls available.</div>;
   }
 
+  
+  //type CustomColumnsType = ColumnsType<object> | undefined;
+  //let callobject:Call;
+  //type CustomColumnsType = ColumnsType<Call> | undefined;
+
   // Define the columns for the table
   const columnsdata: any = [
     {
       dataIndex: "call_type",
       title: "Call Type",
-      render: (_: any, record: Call) => renderCallType(_, record),
+      render: (_: Call, record: Call) => renderCallType( record),
     },
     {
       dataIndex: "direction",
       title: "Direction",
-      render: (_: any, record: Call) => renderDirection(_, record),
+      render: (_: Call, record: Call) => renderDirection(record),
     },
     { dataIndex: "duration", title: "Duration" },
     { dataIndex: "from", title: "From" },
@@ -151,8 +160,8 @@ const CallsList: React.FC = () => {
     {
       dataIndex: "is_archived",
       title: "Is Archived",
-      render: (_: any, record: Call) => {
-        const handleArchiveCallback = async () => {
+      render: (_: Call, record: Call) => {
+        const handleArchiveCallback= async (): Promise<void> => {
           try {
             // Handle archiving/unarchiving of the call
             const updatedIsArchived: Call = await handlearchive(record);
@@ -178,11 +187,11 @@ const CallsList: React.FC = () => {
           <>
             {record.is_archived ? (
               <ArchiveButton onClick={handleArchiveCallback} type="link">
-                Archived
+                Unarchive 
               </ArchiveButton>
             ) : (
               <UnarchiveButton onClick={handleArchiveCallback} type="link">
-                Unarchived
+                Archive
               </UnarchiveButton>
             )}
           </>
@@ -192,7 +201,7 @@ const CallsList: React.FC = () => {
     {
       dataIndex: "actions",
       title: "Actions",
-      render: (_: any, record: Call) => renderActions(_, record),
+      render: (_: Call, record: Call) => renderActions(record),
     },
   ];
 

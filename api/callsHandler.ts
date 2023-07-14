@@ -1,7 +1,17 @@
 import axios, { AxiosResponse } from "axios";
 import { CallResponse, Call } from "@/models/types";
 
-const handleCalls = async () => {
+require('dotenv').config();  
+
+
+const BASE_URL= process.env.BASE_URL;
+
+const endpoints ={
+  calls:'/calls',
+};
+
+
+const handleCalls = async ():Promise<Call[] | undefined> => {
   try {
     const token: string | null = localStorage.getItem("access_token");
 
@@ -17,7 +27,7 @@ const handleCalls = async () => {
     // Fetch calls with pagination
     while (true) {
       const response: AxiosResponse<CallResponse> = await axios.get(
-        `https://frontend-test-api.aircall.io/calls?offset=${offset}&limit=${limit}`,
+        `${BASE_URL}${endpoints.calls}?offset=${offset}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

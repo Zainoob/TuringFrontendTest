@@ -26,7 +26,7 @@ export const FilterContainer = styled.div`
   align-items: center;
   width: 100%;
   margin-top: 20px;
-  margin-left: 180px;
+  margin-left: 200px;
 `;
 
 export const Filter = styled(Typography.Text)`
@@ -69,6 +69,7 @@ export const StyledSelect = styled(Select)`
 export const ArchiveButton = styled(Button)`
   border-radius: 4px;
   background-color: #e0fff6;
+  width:100px;
   color: #19c2c4;
   box-shadow: none;
 `;
@@ -76,6 +77,7 @@ export const UnarchiveButton = styled(Button)`
   border-radius: 4px;
   background-color: #e3e3e3;
   color: #6d6d6d;
+  width:100px;
   box-shadow: none;
 `;
 

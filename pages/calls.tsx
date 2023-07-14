@@ -12,11 +12,11 @@ import {
   Heading,
 } from "@/styles/calls.styled";
 import image from "../design-files/TTLogo.png";
-import { useRouter } from "next/router";
-import CallsList from "@/components/callList";
+import { NextRouter, useRouter } from "next/router";
+import CallsList from "@/components/call-list/callList";
 const Calls: React.FC = () => {
-  const imageSrc = image.src;
-  const router =useRouter();
+  const imageSrc:string = image.src;
+  const router: NextRouter =useRouter();
 
   //when user clicks log out
   const handleLogout = () => {

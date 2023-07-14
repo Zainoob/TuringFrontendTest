@@ -1,13 +1,13 @@
 import { Button, Modal, Form, Input, Typography, notification } from "antd";
 import { useState } from "react";
-import { DetailsContainer, Text, StyledButton } from "@/styles/callDetails.styled";
+import { DetailsContainer, Text, StyledButton } from "./elements";
 import handleNote from "@/api/notesHandler";
-import { CallDetailsPopupProps } from "../models/types";
+import { CallDetailsPopupProps } from "../../models/types";
 
 const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
   // State variables
-  const [visible, setVisible] = useState(false);
-  const [note, setNote] = useState("");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [note, setNote] = useState<string>("");
 
   // Open the modal
   const handleClickOpen = () => {
@@ -26,7 +26,7 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
 
   // Save the note
   const handleSaveNote = async (): Promise<void> => {
-    const callId = call.id; // Accessing the call ID from the props
+    const callId:string = call.id; // Accessing the call ID from the props
     handleClose();
     try {
       // Call the API to save the note

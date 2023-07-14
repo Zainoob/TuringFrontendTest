@@ -46,7 +46,7 @@ export const ContentContainer = styled(Content)`
 
 export const HeadingWrapper = styled.div`
   margin-top: 20px;
-  margin-left: 90px;
+  margin-left: 100px;
 `;
 
 export const Heading = styled(Typography.Title)`

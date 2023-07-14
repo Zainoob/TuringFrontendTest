@@ -1,8 +1,8 @@
 import { Call } from "@/models/types";
-import CallDetailsPopup from "@/components/callDetails";
+import CallDetailsPopup from "@/components/call-details/callDetails";
 
 // Function to render the call type column
-export function renderCallType(_: any, record: Call) {
+export function renderCallType(record: Call):JSX.Element {
   let callType: string = "";
   let color = "";
 
@@ -21,7 +21,7 @@ export function renderCallType(_: any, record: Call) {
 }
 
 // Function to render the direction column
-export function renderDirection(_: any, record: Call) {
+export function renderDirection(record: Call):JSX.Element {
   return (
     <span style={{ color: "#225FBD" }}>
       {record.direction === "inbound" ? "Inbound" : "Outbound"}
@@ -30,6 +30,7 @@ export function renderDirection(_: any, record: Call) {
 }
 
 // Function to render the actions column
-export function renderActions(_: any, record: Call) {
+export function renderActions(record: Call):JSX.Element {
   return <CallDetailsPopup call={record} />;
+
 }

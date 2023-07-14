@@ -1,12 +1,9 @@
-import { useEffect, useState, useContext } from "react";
-import { FormEvent } from "react";
-import axios, { AxiosResponse } from "axios";
-import { authtoken } from "@/models/types";
+import { useEffect} from "react";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import image from "../design-files/TTLogo.png";
-import { useRouter } from "next/router";
+import image from "../../design-files/TTLogo.png";
+import { NextRouter, useRouter } from "next/router";
 import handlelogin from "@/api/loginHandler";
-import { Form, Input, Button, notification } from "antd";
+import { Form, notification } from "antd";
 import {
   ContentContainer,
   LoginButton,
@@ -14,16 +11,15 @@ import {
   Navbar,
   Image,
   InputField,
-  ButtonContainer,
   LoginContainer,
-} from "@/styles/loginPage.styled";
+} from "./elements";
 export default function Login() {
-  const imageSrc = image.src;
-  const router = useRouter();
+  const imageSrc:string = image.src;
+  const router:NextRouter = useRouter();
 
   //sending login request to endpoint auth/login
   const handleLoginClick = async (values: unknown) => {
-    const { username, password } = values as { username: any; password: any };
+    const { username, password } = values as { username: string; password: string };
 
     try {
       const login: boolean | undefined = await handlelogin(username, password);
