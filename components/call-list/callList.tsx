@@ -15,7 +15,7 @@ import {
 import { handlearchive } from "@/api/archiveHandler";
 import handleCalls from "@/api/callsHandler";
 import { Call } from "@/models/types";
-import { Heading, HeadingWrapper } from "@/styles/calls.styled";
+import { Heading, HeadingWrapper } from "@/pages/calls/elements";
 import {
   renderActions,
   renderDirection,

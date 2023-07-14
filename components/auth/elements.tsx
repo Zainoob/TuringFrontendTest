@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { Layout, Input, Button, Card, Space, Form } from "antd";
 const { Header, Footer } = Layout;
+import theme from '@/styles/theme.module.scss';
+const { backgroundColor, loginformBg,  borderRadius } = theme;
+
 
 export const Image = styled.img`
   width: 180px;
   height: 20px;
-  background-color: #ffffff;
+  background-color: ${backgroundColor};
 `;
 
 export const ContentContainer = styled.div`
@@ -13,7 +16,7 @@ export const ContentContainer = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #fdf5f3;
+  background-color: ${loginformBg};
 `;
 
 export const LoginForm =styled(Form)`
@@ -23,8 +26,8 @@ export const LoginForm =styled(Form)`
   padding-right: 20px;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
-  border-radius: 5px;
+  background-color: ${backgroundColor};
+  border-radius:  ${borderRadius};
 `;
 
 export const InputField = styled(Input)`
@@ -48,8 +51,8 @@ export const ButtonContainer = styled.div`
 export const LoginButton = styled(Button)`
   width: 80px;
   height: 40px;
-  border-radius: 5px;
+  border-radius: ${borderRadius};
 `;
 export const Navbar = styled(Header)`
-    background-color: #ffffff;
+    background-color:${backgroundColor};
 `;

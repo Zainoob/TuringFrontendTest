@@ -8,14 +8,15 @@ import {
   Pagination,
 } from "antd";
 import styled from "styled-components";
-import { CallResponse, Call, Note } from "@/models/types";
+import theme from "@/styles/theme.module.scss";
+const { backgroundColor, buttonColor } = theme;
 
 const { Header, Content } = Layout;
 
 export const StyledButton = styled(Button)`
-  background-color: #4c41f5;
+  color: ${backgroundColor};
+  background-color: ${buttonColor};
   margin-left: auto;
-  color: #ffffff;
 `;
 
 export const Container = styled(Layout)`
@@ -23,7 +24,7 @@ export const Container = styled(Layout)`
   height: fit-content;
 `;
 export const NavBar = styled(Header)`
-  background-color: #ffffff;
+  background-color: ${backgroundColor};
   display: flex;
   align-items: center;
 `;
@@ -35,11 +36,11 @@ export const ImageContainer = styled.div`
 export const Image = styled.img`
   width: 220px;
   height: 25px;
-  background-color: #ffffff;
+  background-color: ${backgroundColor};
 `;
 
 export const ContentContainer = styled(Content)`
-  background-color: #ffffff;
+  background-color: ${backgroundColor};
   height: fit-content;
   overflow-x: hidden;
 `;

@@ -10,8 +10,8 @@ import {
   Image,
   HeadingWrapper,
   Heading,
-} from "@/styles/calls.styled";
-import image from "../design-files/TTLogo.png";
+} from "./elements";
+import image from "../../design-files/TTLogo.png";
 import { NextRouter, useRouter } from "next/router";
 import CallsList from "@/components/call-list/callList";
 const Calls: React.FC = () => {
@@ -35,7 +35,7 @@ const Calls: React.FC = () => {
           <Image src={imageSrc} alt="Turing Tech Logo" />
         </ImageContainer>
         <StyledButton type="primary" onClick={handleLogout}>
-          <Typography.Text type="secondary">Log out</Typography.Text>
+         Log out
         </StyledButton>
       </NavBar>
       <ContentContainer>

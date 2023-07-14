@@ -8,7 +8,8 @@ import {
   Pagination,
 } from "antd";
 import styled from "styled-components";
-import { Call } from "@/models/types";
+import theme from "@/styles/theme.module.scss";
+const { backgroundColor, arhiveBg, archiveText, unarchiveBg, unarchiveText } = theme;
 
 export const TableContainer = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ export const TableContainer = styled.div`
   height: fit-content;
   text-align: left;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: ${backgroundColor};
 `;
 
 export const FilterContainer = styled.div`
@@ -68,16 +69,16 @@ export const StyledSelect = styled(Select)`
 
 export const ArchiveButton = styled(Button)`
   border-radius: 4px;
-  background-color: #e0fff6;
-  width:100px;
-  color: #19c2c4;
+  width: 100px;
+  background-color: ${arhiveBg};
+  color: ${archiveText};
   box-shadow: none;
 `;
 export const UnarchiveButton = styled(Button)`
   border-radius: 4px;
-  background-color: #e3e3e3;
-  color: #6d6d6d;
-  width:100px;
+  background-color: ${unarchiveBg};
+  color: ${unarchiveText};
+  width: 100px;
   box-shadow: none;
 `;
 

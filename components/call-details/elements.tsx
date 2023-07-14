@@ -2,11 +2,14 @@ import {
   Button,
 } from "antd";
 import styled from "styled-components";
+import theme from '@/styles/theme.module.scss';
+
+const { backgroundColor, loginformBg,  borderRadius, buttonColor } = theme;
 
 export const StyledButton = styled(Button)`
-  background-color: #4c41f5;
+  background-color: ${buttonColor};
   margin-left: auto;
-  color: #ffffff;
+  color: ${backgroundColor};
 `;
 
 export const DetailsContainer = styled.div`
