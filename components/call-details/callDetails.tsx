@@ -38,7 +38,7 @@ const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
         });
       }
     } catch (error) {
-      console.log("Saving notes failed.", error);
+      alert(`Error fetching data:${error}`);
     }
   };
 

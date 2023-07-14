@@ -39,7 +39,7 @@ const handleNote = async (callId: string, note: string):Promise<boolean | undefi
     }
 
   } catch (error) {
-    console.log("Error. Call details couldn't be added", error);
+    alert(`Error fetching data:${error}`);
     return false;
   }
 };

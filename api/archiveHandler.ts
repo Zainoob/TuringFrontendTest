@@ -31,7 +31,6 @@ export const handlearchive = async (call: Call):Promise<Call> => {
         },
       }
     );
-    console.log(`${BASE_URL}${endpoints.calls}${callid}${endpoints.archive}`);
 
     // Update the is_archived value of the call
     if (response.data.id) {
@@ -41,7 +40,7 @@ export const handlearchive = async (call: Call):Promise<Call> => {
     return call;
 
   } catch (error) {
-    console.log("Archive try failed:", error);
+    alert(`Error fetching data:${error}`);
     return call;
   }
 };

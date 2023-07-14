@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { authtoken } from "@/models/types";
+import { Router } from "next/router";
 require('dotenv').config();  
 
 
@@ -32,7 +33,7 @@ const handlelogin = async (username: string, password: string):Promise<true | un
     // Display alert message
 
   } catch (error) {
-    console.log("Login failed:", error);
+    alert(`Error fetching data:${error}`);
   }
 };
 
@@ -42,8 +43,7 @@ const refreshToken = async (): Promise<void> => {
 
   // Check if access token is available
   if (!Token) {
-    console.log("No token in storage");
-    return;
+    throw new Error("Access token not found");
   }
 
   try {
@@ -65,7 +65,7 @@ const refreshToken = async (): Promise<void> => {
     // Start token refresh timer (10 minutes) before it expires
     setTimeout(refreshToken, TIME_OUT);
   } catch (error) {
-    console.log("Token refresh failed:", error);
+    alert(`Error fetching data:${error}`);
   }
 };
 

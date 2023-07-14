@@ -1,5 +1,5 @@
 import {
-  Typography,notification
+ notification
 } from "antd";
 import {
   NavBar,

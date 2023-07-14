@@ -6,10 +6,13 @@ import {
   Table,
   Button,
   Pagination,
+  Spin,
 } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import theme from "@/styles/theme.module.scss";
-const { backgroundColor, arhiveBg, archiveText, unarchiveBg, unarchiveText } = theme;
+const { backgroundColor, arhiveBg, archiveText, unarchiveBg, unarchiveText } =
+  theme;
 
 export const TableContainer = styled.div`
   display: flex;
@@ -19,6 +22,12 @@ export const TableContainer = styled.div`
   text-align: left;
   justify-content: center;
   background-color: ${backgroundColor};
+`;
+export const CustomSpin = styled(LoadingOutlined)`
+  font-size: 24px;
+`;
+export const SpinIcon = styled(Spin)`
+  margin-left: 100px;
 `;
 
 export const FilterContainer = styled.div`

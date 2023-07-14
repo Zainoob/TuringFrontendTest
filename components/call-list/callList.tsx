@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Select, notification } from "antd";
 import {
   TableContainer,
@@ -11,72 +11,97 @@ import {
   Filter,
   ArchiveButton,
   UnarchiveButton,
+  CustomSpin,
+  SpinIcon,
 } from "./elements";
 import { handlearchive } from "@/api/archiveHandler";
 import handleCalls from "@/api/callsHandler";
-import { Call } from "@/models/types";
-import { Heading, HeadingWrapper } from "@/pages/calls/elements";
+import { Call, CallResponse } from "@/models/types";
 import {
   renderActions,
   renderDirection,
   renderCallType,
 } from "@/components/call-components/callComponents";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table/interface";
+import { SpinIndicator } from "antd/es/spin";
 
 const { Option } = Select;
 
+import { NextRouter, useRouter } from "next/router";
+
+
+
 const CallsList: React.FC = () => {
   //state variables
+  const rowsPerPage: number = 6;
   const [filter, setFilter] = useState<string>("All");
   const [page, setPage] = useState<number>(1);
   const [calls, setCalls] = useState<Call[]>([]);
   const [filteredcalls, setfilteredCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const rowsPerPage:number = 6;
+  const [totalcount, setTotalCount] = useState<number>(0);
+  const router: NextRouter =useRouter();
 
   // Options for filter select
   const options: {
     value: string;
     label: string;
-}[] = [
+  }[] = [
     { value: "All", label: "All" },
     { value: "Archived", label: "Archived" },
     { value: "Unarchived", label: "Unarchived" },
   ];
+  const handlePaginationChange = (newPage: number) => {
+    setPage(newPage);
+    setLoading(true);
+    const offset: number = (newPage - 1) * 6;
+    const limit: number = (newPage - 1) * 6 + 6;
+    fetchData(offset, limit);
+  };
 
   // Configuration for pagination
-  const paginationConfig:TablePaginationConfig = {
-    total: filteredcalls.length,
+  const paginationConfig: TablePaginationConfig = {
+    total: totalcount,
     pageSize: rowsPerPage,
     defaultCurrent: 1,
     current: page,
-    onChange: setPage,
+    onChange: handlePaginationChange,
     showSizeChanger: false,
     showQuickJumper: false,
   };
+  const fetchData = async (offset: number, limit: number): Promise<void> => {
+    try {
+      // Fetch calls data from API
+      const token: string | null = localStorage.getItem("access_token");
+      if(!token)
+      {
+        
+        router.push("/");
+      }
+      const callsData: CallResponse | undefined = await handleCalls(
+        offset,
+        limit
+      );
+      if (callsData) {
+        setLoading(false);
+        setTotalCount(callsData.totalCount);
+        setCalls(callsData.nodes);
+        setfilteredCalls(callsData.nodes);
+      }
+    } catch (error) {
+      alert(`Error fetching data:${error}`);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
+    const offset: number = (page - 1) * 6;
+    const limit: number = (page- 1) * 6 + 6;
     setLoading(true);
-    const fetchData = async (): Promise<void> => {
-      try {
-        // Fetch calls data from API
-        const callsData: Call[] | undefined = await handleCalls();
-        if (callsData) {
-          setLoading(false);
-          setCalls(callsData);
-          setfilteredCalls(callsData);
-        }
-      } catch (error) {
-        console.log("Error in fetching calls", error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchData(offset, limit);
   }, []);
 
-  const handleUpdateCall = (record: Call):void => {
+  const handleUpdateCall = (record: Call): void => {
     // Update the archived status of the call in filteredCalls state
     setfilteredCalls((prevCalls) => {
       return prevCalls.map((call) => {
@@ -88,7 +113,8 @@ const CallsList: React.FC = () => {
     });
   };
 
-  const handleFilterChange = (selectedValue: unknown):void => {
+  //filter calls based on chosen filter value
+  const handleFilterChange = (selectedValue: unknown): void => {
     if (typeof selectedValue === "string") {
       setFilter(selectedValue);
     }
@@ -110,24 +136,19 @@ const CallsList: React.FC = () => {
 
       setfilteredCalls(filterCalls);
     } catch (error) {
-      console.log("Error in filtering calls", error);
+      alert(`Error fetching data:${error}`);
     }
   };
 
-  const getPaginatedData = ():Call[] => {
-    // Get the paginated data based on the current page and rows per page
-    const startIndex = (page - 1) * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    return filteredcalls.slice(startIndex, endIndex);
+  const getPaginatedData = (): Call[] => {
+    // return the paginated data
+    return filteredcalls;
   };
 
   if (loading) {
     // Display loading message while fetching data
-    return (
-      <HeadingWrapper>
-        <Heading level={5}>Loading...Please wait</Heading>
-      </HeadingWrapper>
-    );
+    const anticon: SpinIndicator = <CustomSpin />;
+    return <SpinIcon indicator={anticon}></SpinIcon>;
   }
 
   if (filteredcalls.length === 0) {
@@ -135,17 +156,12 @@ const CallsList: React.FC = () => {
     return <div>No calls available.</div>;
   }
 
-  
-  //type CustomColumnsType = ColumnsType<object> | undefined;
-  //let callobject:Call;
-  //type CustomColumnsType = ColumnsType<Call> | undefined;
-
   // Define the columns for the table
   const columnsdata: any = [
     {
       dataIndex: "call_type",
       title: "Call Type",
-      render: (_: Call, record: Call) => renderCallType( record),
+      render: (_: Call, record: Call) => renderCallType(record),
     },
     {
       dataIndex: "direction",
@@ -161,7 +177,7 @@ const CallsList: React.FC = () => {
       dataIndex: "is_archived",
       title: "Is Archived",
       render: (_: Call, record: Call) => {
-        const handleArchiveCallback= async (): Promise<void> => {
+        const handleArchiveCallback = async (): Promise<void> => {
           try {
             // Handle archiving/unarchiving of the call
             const updatedIsArchived: Call = await handlearchive(record);
@@ -179,7 +195,7 @@ const CallsList: React.FC = () => {
               });
             }
           } catch (error) {
-            console.log("Error occurred while archiving:", error);
+            alert(`Error fetching data:${error}`);
           }
         };
 
@@ -187,11 +203,11 @@ const CallsList: React.FC = () => {
           <>
             {record.is_archived ? (
               <ArchiveButton onClick={handleArchiveCallback} type="link">
-                Unarchive 
+                Archived
               </ArchiveButton>
             ) : (
               <UnarchiveButton onClick={handleArchiveCallback} type="link">
-                Archive
+                Unarchived
               </UnarchiveButton>
             )}
           </>

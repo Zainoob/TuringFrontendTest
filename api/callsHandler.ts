@@ -11,7 +11,7 @@ const endpoints ={
 };
 
 
-const handleCalls = async ():Promise<Call[] | undefined> => {
+const handleCalls = async (offset:number, limit:number):Promise<CallResponse | undefined> => {
   try {
     const token: string | null = localStorage.getItem("access_token");
 
@@ -19,13 +19,7 @@ const handleCalls = async ():Promise<Call[] | undefined> => {
     if (!token) {
       throw new Error("Access token not found");
     }
-
-    const calls: Call[] = [];
-    let offset = 0;
-    const limit = 10;
-
     // Fetch calls with pagination
-    while (true) {
       const response: AxiosResponse<CallResponse> = await axios.get(
         `${BASE_URL}${endpoints.calls}?offset=${offset}&limit=${limit}`,
         {
@@ -34,26 +28,11 @@ const handleCalls = async ():Promise<Call[] | undefined> => {
           },
         }
       );
-
-      const callResponse: CallResponse = response.data;
-      const { nodes, hasNextPage } = callResponse;
-
       // Append fetched calls to the existing array
-      calls.push(...nodes);
-
-      // If there are no more pages, break the loop
-      if (!hasNextPage) {
-        break;
-      }
-
-      // Increment offset for the next page
-      offset += limit;
-    }
-
-    return calls;
+    return response.data;
 
   } catch (error) {
-    console.log("Error in fetching calls", error);
+    alert(`Error fetching data:${error}`);
   }
 };
 
