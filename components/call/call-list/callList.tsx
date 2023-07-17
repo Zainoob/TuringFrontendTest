@@ -18,7 +18,7 @@ import {
 import { handlearchive } from "@/api/archiveHandler";
 import handleCalls from "@/api/callsHandler";
 import { Call, CallResponse } from "@/models/types";
-import CallDetailsPopup from "@/components/call-details/callDetails";
+import CallDetailsPopup from "@/components/call/call-details/callDetails";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table/interface";
 import { SpinIndicator } from "antd/es/spin";
 import { globalTheme } from "@/styles/theme";
