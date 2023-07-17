@@ -2,7 +2,7 @@ import { Button, Modal, Form, Input, Typography, notification } from "antd";
 import { useState } from "react";
 import { DetailsContainer, Text, StyledButton } from "./elements";
 import handleNote from "@/api/notesHandler";
-import { CallDetailsPopupProps } from "../../../models/types";
+import { CallDetailsPopupProps } from "../../models/types";
 
 const CallDetailsPopup: React.FC<CallDetailsPopupProps> = ({ call }) => {
   // State variables
