@@ -8,14 +8,13 @@ import {
   Pagination,
 } from "antd";
 import styled from "styled-components";
-import theme from "@/styles/theme.module.scss";
-const { backgroundColor, buttonColor } = theme;
+import { globalTheme } from "@/styles/theme";
 
 const { Header, Content } = Layout;
 
 export const StyledButton = styled(Button)`
-  color: ${backgroundColor};
-  background-color: ${buttonColor};
+  color: ${globalTheme.colors.backgroundColor};
+  background-color: ${globalTheme.colors.buttonColor};
   margin-left: auto;
 `;
 
@@ -24,7 +23,7 @@ export const Container = styled(Layout)`
   height: fit-content;
 `;
 export const NavBar = styled(Header)`
-  background-color: ${backgroundColor};
+  background-color: ${globalTheme.colors.backgroundColor};
   display: flex;
   align-items: center;
 `;
@@ -36,11 +35,11 @@ export const ImageContainer = styled.div`
 export const Image = styled.img`
   width: 220px;
   height: 25px;
-  background-color: ${backgroundColor};
+  background-color: ${globalTheme.colors.backgroundColor};
 `;
 
 export const ContentContainer = styled(Content)`
-  background-color: ${backgroundColor};
+  background-color: ${globalTheme.colors.backgroundColor};
   height: fit-content;
   overflow-x: hidden;
 `;

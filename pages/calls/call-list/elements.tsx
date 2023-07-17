@@ -10,9 +10,7 @@ import {
 } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import theme from "@/styles/theme.module.scss";
-const { backgroundColor, arhiveBg, archiveText, unarchiveBg, unarchiveText } =
-  theme;
+import { globalTheme } from "@/styles/theme";
 
 export const TableContainer = styled.div`
   display: flex;
@@ -21,7 +19,7 @@ export const TableContainer = styled.div`
   height: fit-content;
   text-align: left;
   justify-content: center;
-  background-color: ${backgroundColor};
+  background-color: ${globalTheme.colors.backgroundColor};
 `;
 export const CustomSpin = styled(LoadingOutlined)`
   font-size: 24px;
@@ -39,6 +37,10 @@ export const FilterContainer = styled.div`
   margin-left: 200px;
 `;
 
+export const StyledSpan = styled.span`
+  color: ${globalTheme.colors.tableColor};
+ 
+`;
 export const Filter = styled(Typography.Text)`
   margin-right: 0.5rem;
 `;
@@ -79,14 +81,14 @@ export const StyledSelect = styled(Select)`
 export const ArchiveButton = styled(Button)`
   border-radius: 4px;
   width: 100px;
-  background-color: ${arhiveBg};
-  color: ${archiveText};
+  background-color: ${globalTheme.colors.archiveBg};
+  color: ${globalTheme.colors.archiveText};
   box-shadow: none;
 `;
 export const UnarchiveButton = styled(Button)`
   border-radius: 4px;
-  background-color: ${unarchiveBg};
-  color: ${unarchiveText};
+  background-color: ${globalTheme.colors.unarchiveBg};
+  color: ${globalTheme.colors.unarchiveText};
   width: 100px;
   box-shadow: none;
 `;

@@ -13,23 +13,19 @@ import {
   UnarchiveButton,
   CustomSpin,
   SpinIcon,
+  StyledSpan,
 } from "./elements";
 import { handlearchive } from "@/api/archiveHandler";
 import handleCalls from "@/api/callsHandler";
 import { Call, CallResponse } from "@/models/types";
-import {
-  renderActions,
-  renderDirection,
-  renderCallType,
-} from "@/components/call-components/callComponents";
+import CallDetailsPopup from "@/pages/calls/call-details/callDetails";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table/interface";
 import { SpinIndicator } from "antd/es/spin";
+import { globalTheme } from "@/styles/theme";
 
 const { Option } = Select;
 
 import { NextRouter, useRouter } from "next/router";
-
-
 
 const CallsList: React.FC = () => {
   //state variables
@@ -40,7 +36,7 @@ const CallsList: React.FC = () => {
   const [filteredcalls, setfilteredCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalcount, setTotalCount] = useState<number>(0);
-  const router: NextRouter =useRouter();
+  const router: NextRouter = useRouter();
 
   // Options for filter select
   const options: {
@@ -69,13 +65,13 @@ const CallsList: React.FC = () => {
     showSizeChanger: false,
     showQuickJumper: false,
   };
+
+  //function to fetch data based on offset and limit
   const fetchData = async (offset: number, limit: number): Promise<void> => {
     try {
       // Fetch calls data from API
       const token: string | null = localStorage.getItem("access_token");
-      if(!token)
-      {
-        
+      if (!token) {
         router.push("/");
       }
       const callsData: CallResponse | undefined = await handleCalls(
@@ -96,13 +92,13 @@ const CallsList: React.FC = () => {
 
   useEffect(() => {
     const offset: number = (page - 1) * 6;
-    const limit: number = (page- 1) * 6 + 6;
+    const limit: number = (page - 1) * 6 + 6;
     setLoading(true);
     fetchData(offset, limit);
   }, []);
 
+  // Update the archived status of the call in filteredCalls state
   const handleUpdateCall = (record: Call): void => {
-    // Update the archived status of the call in filteredCalls state
     setfilteredCalls((prevCalls) => {
       return prevCalls.map((call) => {
         if (call.id === record.id) {
@@ -144,6 +140,39 @@ const CallsList: React.FC = () => {
     // return the paginated data
     return filteredcalls;
   };
+
+  // Function to render the call type column
+  function renderCallType(record: Call): JSX.Element {
+    let callType: string = "";
+    let color = "";
+
+    if (record.call_type === "voicemail") {
+      callType = "Voicemail";
+      color =  globalTheme.colors.tableColor;
+    } else if (record.call_type === "answered") {
+      callType = "Answered";
+      color =  globalTheme.colors.archiveText;
+    } else if (record.call_type === "missed") {
+      callType = "Missed";
+      color =  globalTheme.colors.dangerColor;
+    }
+
+    return <span style={{ color }}>{callType}</span>;
+  }
+
+  // Function to render the direction column
+  function renderDirection(record: Call): JSX.Element {
+    return (
+      <StyledSpan>
+        {record.direction === "inbound" ? "Inbound" : "Outbound"}
+      </StyledSpan>
+    );
+  }
+
+  // Function to render the actions column
+  function renderActions(record: Call): JSX.Element {
+    return <CallDetailsPopup call={record} />;
+  }
 
   if (loading) {
     // Display loading message while fetching data

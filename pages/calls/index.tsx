@@ -13,7 +13,7 @@ import {
 } from "./elements";
 import image from "../../design-files/TTLogo.png";
 import { NextRouter, useRouter } from "next/router";
-import CallsList from "@/components/call-list/callList";
+import CallsList from "@/pages/calls/call-list/callList";
 const Calls: React.FC = () => {
   const imageSrc:string = image.src;
   const router: NextRouter =useRouter();
